@@ -1,0 +1,86 @@
+-- Q1. Query all columns for all American cities in the CITY table with populations larger than 100000. 
+-- The CountryCode for America is USA.
+
+SELECT * 
+FROM CITY
+WHERE POPULATION >100000 AND COUNTRYCODE = 'USA';
+
+
+-- Q2. Query the two cities in STATION with the shortest and longest CITY names, 
+-- as well as their respective lengths(i.e.: number of characters in the name). 
+-- If there is more than one smallest or largest city, choose the one that comes first when ordered alphabetically.
+
+Select * from 
+(
+    Select top 1 City, Len(city) LenCity 
+    from Station where len(city) = (Select min(len(city)) from Station) order by city asc
+) AS A
+union
+Select top 1 City, Len(city) from Station where len(city) = (Select max(len(city)) from Station);
+
+
+-- Q3. Query the list of CITY names starting with vowels (i.e., a, e, i, o, or u) from STATION. 
+-- Your result cannot contain duplicates.
+
+SELECT DISTINCT CITY
+FROM STATION
+WHERE CITY LIKE '[aeiou]%';
+
+
+-- Q4. Query the list of CITY names ending with vowels (a, e, i, o, u) from STATION. 
+--Your result cannot contain duplicates.
+
+SELECT DISTINCT CITY
+FROM STATION
+WHERE CITY LIKE '%[aeiou]';
+
+
+-- Q5. Query the list of CITY names from STATION which have vowels (i.e., a, e, i, o, and u) as 
+-- both their first and last characters. Your result cannot contain duplicates.
+
+SELECT DISTINCT CITY
+FROM STATION
+WHERE CITY LIKE '[AEIOU]%[AEIOU]';
+
+
+-- Q6. Query the list of CITY names from STATION that do not start with vowels. Your result cannot contain 
+-- duplicates.
+
+SELECT DISTINCT CITY
+FROM STATION
+WHERE CITY LIKE '[^AEIOU]%';
+
+
+-- Q7. Query the list of CITY names from STATION that do not end with vowels. Your result cannot contain duplicates.
+
+SELECT DISTINCT CITY
+FROM STATION
+WHERE CITY LIKE '%[^AEIOU]';
+
+
+-- Q8. Query the list of CITY names from STATION that either do not start with vowels or do not end with vowels. 
+-- Your result cannot contain duplicates.
+
+SELECT DISTINCT CITY 
+FROM STATION 
+WHERE
+(
+CITY NOT LIKE 'a%' 
+AND CITY NOT LIKE 'e%' 
+AND CITY NOT LIKE 'i%' 
+AND CITY NOT LIKE 'o%' 
+AND CITY NOT LIKE 'u%'
+) 
+OR 
+(
+CITY NOT LIKE '%a' 
+AND CITY NOT LIKE '%e'
+AND CITY NOT LIKE '%i' 
+AND CITY NOT LIKE '%o' 
+AND CITY NOT LIKE '%u'
+);
+
+
+-- Q9. Query the list of CITY names from STATION that do not start with vowels and do not end with vowels. 
+-- Your result cannot contain duplicates.
+
