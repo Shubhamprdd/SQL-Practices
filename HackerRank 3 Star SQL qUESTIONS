@@ -1,0 +1,135 @@
+Q1. Query the Name of any student in STUDENTS who scored higher than 75 Marks. Order your output by the last three characters of each name. 
+If two or more students both have names ending in the same last three characters (i.e.: Bobby, Robby, etc.), secondary sort them by ascending ID.
+
+SELECT Name
+FROM STUDENTS
+WHERE Marks>75
+ORDER BY RIGHT(Name, 3), ID;
+
+
+Q2. Write a query that prints a list of employee names (i.e.: the name attribute) from the Employee table in alphabetical order.
+
+SELECT name
+FROM Employee
+ORDER BY name;
+
+
+Q3. Write a query that prints a list of employee names (i.e.: the name attribute) for employees in Employee having a 
+salary greater than $2000 per month who have been employees for less than 10 months. Sort your result by ascending employee_id.
+
+SELECT name
+FROM Employee
+WHERE salary > 2000 and months < 10
+ORDER BY employee_id;
+
+
+Q4. Write a query identifying the type of each record in the TRIANGLES table using its three side lengths. Output one of the following statements for each record in the table:
+
+Equilateral: It's a triangle with 3 sides of equal length.
+Isosceles: It's a triangle with 2 sides of equal length.
+Scalene: It's a triangle with 3 sides of differing lengths.
+Not A Triangle: The given values of A, B, and C don't form a triangle.
+
+SELECT CASE
+WHEN A + B <= C OR A + C <= B OR B + C <= A THEN 'Not A Triangle'
+WHEN A = B AND B = C THEN 'Equilateral'
+WHEN A = B OR B = C OR A = C THEN 'Isosceles'
+ELSE 'Scalene'
+END
+FROM TRIANGLES;
+
+
+Q5. Generate the following two result sets:
+
+1. Query an alphabetically ordered list of all names in OCCUPATIONS, immediately followed by the first letter of each profession as a parenthetical (i.e.: enclosed in parentheses). 
+For example: AnActorName(A), ADoctorName(D), AProfessorName(P), and ASingerName(S).
+
+2. Query the number of ocurrences of each occupation in OCCUPATIONS. Sort the occurrences in ascending order, and output them in the following format:
+
+There are a total of [occupation_count] [occupation]s.
+where [occupation_count] is the number of occurrences of an occupation in OCCUPATIONS and [occupation] is the lowercase occupation name. 
+If more than one Occupation has the same [occupation_count], they should be ordered alphabetically.
+
+Note: There will be at least two entries in the table for each type of occupation.
+
+SELECT 
+NAME + '(' +LEFT(OCCUPATION, 1) + ')' AS namewithoccupation
+FROM OCCUPATIONS
+ORDER BY NAME;
+
+SELECT 
+    'There are a total of ' + CAST(COUNT(*) AS VARCHAR) + ' ' + LOWER(OCCUPATION) + 's.' AS OccupationCount
+FROM 
+    OCCUPATIONS
+GROUP BY 
+    OCCUPATION
+ORDER BY 
+    COUNT(*), OCCUPATION;
+
+
+Q6. Pivot the Occupation column in OCCUPATIONS so that each Name is sorted alphabetically and displayed underneath its corresponding Occupation. 
+The output column headers should be Doctor, Professor, Singer, and Actor, respectively.
+
+Note: Print NULL when there are no more names corresponding to an occupation.
+
+-- Generate row numbers for each occupation to maintain alphabetical order
+WITH RankedOccupations AS (
+    SELECT 
+        Name,
+        Occupation,
+        ROW_NUMBER() OVER (PARTITION BY Occupation ORDER BY Name) AS RowNum
+    FROM 
+        OCCUPATIONS
+)
+-- Pivot the table to get names under respective occupations
+SELECT 
+    MAX(CASE WHEN Occupation = 'Doctor' THEN Name END) AS Doctor,
+    MAX(CASE WHEN Occupation = 'Professor' THEN Name END) AS Professor,
+    MAX(CASE WHEN Occupation = 'Singer' THEN Name END) AS Singer,
+    MAX(CASE WHEN Occupation = 'Actor' THEN Name END) AS Actor
+FROM 
+    RankedOccupations
+GROUP BY 
+    RowNum
+ORDER BY 
+    RowNum;
+
+
+Q7. Write a query to find the node type of Binary Tree ordered by the value of the node. Output one of the following for each node:
+
+Root: If node is root node.
+Leaf: If node is leaf node.
+Inner: If node is neither root nor leaf node.
+
+Select B1.N, 
+Case 
+When B1.P is Null Then 'Root' 
+When tt.N is Null Then 'Leaf' 
+Else 'Inner' 
+End
+From BST B1
+
+Outer Apply (         
+            Select 1 N
+From BST B2
+Where B2.P=B1.N
+Group by B2.P)tt
+Order By B1.N;
+
+
+Q8. write a query to print the company_code, founder name, total number of lead managers, total number of senior managers, total number of managers,
+and total number of employees. Order your output by ascending company_code.
+
+Note:
+The tables may contain duplicate records.
+The company_code is string, so the sorting should not be numeric. For example, if the company_codes are C_1, C_2, and C_10, then the ascending company_codes will be C_1, C_10, and C_2.
+
+SELECT c.Company_Code, c.founder, count(Distinct e.Lead_Manager_Code), 
+count(distinct e.Senior_Manager_Code), count(distinct e.Manager_Code), 
+count(distinct e.employee_Code) 
+FROM Company c 
+JOIN 
+Employee e 
+ON c.Company_Code = e.Company_Code 
+GROUP BY c.Company_Code, c.Founder 
+ORDER BY c.COMpany_Code;
