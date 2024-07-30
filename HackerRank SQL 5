@@ -1,11 +1,13 @@
-Q1. Query the smallest Northern Latitude (LAT_N) from STATION that is greater than 38.7780. Round your answer to 4 decimal places.
+-- Q37. Query the smallest Northern Latitude (LAT_N) from 
+-- STATION that is greater than 38.7780. Round your answer to 4 decimal places.
 
 SELECT ROUND(MIN(LAT_N), 4)
 FROM STATION
 WHERE LAT_N > 38.7780;
 
 
-Q2 Query the Western Longitude (LONG_W)where the smallest Northern Latitude (LAT_N) in STATION is greater than 38.7780. Round your answer to 4 decimal places.
+-- Q38. Query the Western Longitude (LONG_W)where the smallest Northern Latitude (LAT_N) 
+-- in STATION is greater than 38.7780. Round your answer to 4 decimal places.
 
 SELECT ROUND(LONG_W, 4)
 FROM STATION
@@ -14,7 +16,7 @@ WHERE LAT_N = (SELECT MIN(LAT_N)
                WHERE LAT_N > 38.7780);
 
 
-Q3. Consider P1(a,b) and P2(c,d) to be two points on a 2D plane.
+-- Q39. Consider P1(a,b) and P2(c,d) to be two points on a 2D plane.
 
  a happens to equal the minimum value in Northern Latitude (LAT_N in STATION).
  b happens to equal the minimum value in Western Longitude (LONG_W in STATION).
@@ -26,7 +28,7 @@ SELECT ROUND(ABS(MIN(LAT_N) - MAX(LAT_N)) + ABS(MIN(LONG_W) - MAX(LONG_W)), 4) A
 FROM STATION;
 
 
-Q4. Consider P1(a,b) and P2(c,d) to be two points on a 2D plane where (a,b) are the respective minimum and maximum values of Northern Latitude (LAT_N) 
+-- Q40. Consider P1(a,b) and P2(c,d) to be two points on a 2D plane where (a,b) are the respective minimum and maximum values of Northern Latitude (LAT_N) 
 and (c,d) are the respective minimum and maximum values of Western Longitude (LONG_W) in STATION.
 
 Query the Euclidean Distance between points P1 and P2 and format your answer to display 4 decimal digits.
@@ -42,8 +44,8 @@ FROM
     STATION;
 
 
-Q5. A median is defined as a number separating the higher half of a data set from the lower half. 
-Query the median of the Northern Latitudes (LAT_N) from STATION and round your answer to 4 decimal places.
+-- Q41. A median is defined as a number separating the higher half of a data set from the lower half. 
+-- Query the median of the Northern Latitudes (LAT_N) from STATION and round your answer to 4 decimal places.
 
 SELECT 
     ROUND(AVG(lat_n), 4) AS median
@@ -58,12 +60,15 @@ WHERE
     rn = (SELECT FLOOR((COUNT(rn)+1)/2) FROM station)
 
 
-Q6. You are given two tables: Students and Grades. Students contains three columns ID, Name and Marks.
-Ketty gives Eve a task to generate a report containing three columns: Name, Grade and Mark. 
-Ketty doesn't want the NAMES of those students who received a grade lower than 8. The report must be in descending order by grade 
--- i.e. higher grades are entered first. If there is more than one student with the same grade (8-10) assigned to them, order those particular students by their name alphabetically. 
-Finally, if the grade is lower than 8, use "NULL" as their name and list them by their grades in descending order. 
-If there is more than one student with the same grade (1-7) assigned to them, order those particular students by their marks in ascending order.
+-- Q42. You are given two tables: Students and Grades. Students contains three columns ID, Name and Marks.
+-- Ketty gives Eve a task to generate a report containing three columns: Name, Grade and Mark. 
+-- Ketty doesn't want the NAMES of those students who received a grade lower than 8. 
+-- The report must be in descending order by grade 
+-- i.e. higher grades are entered first. If there is more than one student with the same grade (8-10) 
+-- assigned to them, order those particular students by their name alphabetically. 
+-- Finally, if the grade is lower than 8, use "NULL" as their name and list them by their 
+-- grades in descending order. 
+-- If there is more than one student with the same grade (1-7) assigned to them, order those particular students by their marks in ascending order.
 
 Write a query to help Eve.
 
@@ -86,7 +91,8 @@ ORDER BY
     END ASC;
 
 
-Q7. Given the CITY and COUNTRY tables, query the sum of the populations of all cities where the CONTINENT is 'Asia'.
+-- Q43. Given the CITY and COUNTRY tables, query the sum of the populations of all cities 
+-- where the CONTINENT is 'Asia'.
 
 Note: CITY.CountryCode and COUNTRY.Code are matching key columns.
 
@@ -97,7 +103,7 @@ COUNTRY ON CITY.CountryCode = COUNTRY.Code
 WHERE COUNTRY.Continent = 'Asia';
 
 
-Q8. Given the CITY and COUNTRY tables, query the names of all cities where the CONTINENT is 'Africa'.
+-- Q44. Given the CITY and COUNTRY tables, query the names of all cities where the CONTINENT is 'Africa'.
 
 Note: CITY.CountryCode and COUNTRY.Code are matching key columns.
 
@@ -108,10 +114,10 @@ COUNTRY ON CITY.CountryCode = COUNTRY.Code
 WHERE COUNTRY.Continent = 'Africa';
 
 
-Q9. Given the CITY and COUNTRY tables, query the names of all the continents (COUNTRY.Continent) 
-and their respective average city populations (CITY.Population) rounded down to the nearest integer.
+-- Q45. Given the CITY and COUNTRY tables, query the names of all the continents (COUNTRY.Continent) 
+-- and their respective average city populations (CITY.Population) rounded down to the nearest integer.
 
-Note: CITY.CountryCode and COUNTRY.Code are matching key columns.
+-- Note: CITY.CountryCode and COUNTRY.Code are matching key columns.
 
 SELECT B.Continent, FLOOR(AVG(A.Population))
 FROM CITY AS A
@@ -121,14 +127,14 @@ ON A.COUNTRYCODE = B.CODE
 GROUP BY B.CONTINENT;
 
 
-Q10. P(R) represents a pattern drawn by Julia in R rows. The following pattern represents P(5):
+-- Q46. P(R) represents a pattern drawn by Julia in R rows. The following pattern represents P(5):
 
 * * * * * 
 * * * * 
 * * * 
 * * 
 *
-Write a query to print the pattern P(20).
+-- Write a query to print the pattern P(20).
 
 WITH RECURSIVE Numbers AS (
     SELECT 21 AS num
@@ -141,7 +147,3 @@ SELECT
     REPEAT('* ', num - 1) AS Pattern
 FROM 
     Numbers;
-
-
-
-
