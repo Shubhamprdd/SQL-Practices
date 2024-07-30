@@ -1,0 +1,146 @@
+Q1. Query the smallest Northern Latitude (LAT_N) from STATION that is greater than 38.7780. Round your answer to 4 decimal places.
+
+SELECT ROUND(MIN(LAT_N), 4)
+FROM STATION
+WHERE LAT_N > 38.7780;
+
+
+Q2 Query the Western Longitude (LONG_W)where the smallest Northern Latitude (LAT_N) in STATION is greater than 38.7780. Round your answer to 4 decimal places.
+
+SELECT ROUND(LONG_W, 4)
+FROM STATION
+WHERE LAT_N = (SELECT MIN(LAT_N) 
+               FROM STATION 
+               WHERE LAT_N > 38.7780);
+
+
+Q3. Consider P1(a,b) and P2(c,d) to be two points on a 2D plane.
+
+ a happens to equal the minimum value in Northern Latitude (LAT_N in STATION).
+ b happens to equal the minimum value in Western Longitude (LONG_W in STATION).
+ c happens to equal the maximum value in Northern Latitude (LAT_N in STATION).
+ d happens to equal the maximum value in Western Longitude (LONG_W in STATION).
+Query the Manhattan Distance between points P1 and P2 and round it to a scale of 4 decimal places.
+
+SELECT ROUND(ABS(MIN(LAT_N) - MAX(LAT_N)) + ABS(MIN(LONG_W) - MAX(LONG_W)), 4) AS ManhattanDistance
+FROM STATION;
+
+
+Q4. Consider P1(a,b) and P2(c,d) to be two points on a 2D plane where (a,b) are the respective minimum and maximum values of Northern Latitude (LAT_N) 
+and (c,d) are the respective minimum and maximum values of Western Longitude (LONG_W) in STATION.
+
+Query the Euclidean Distance between points P1 and P2 and format your answer to display 4 decimal digits.
+
+SELECT 
+    ROUND(
+        SQRT(
+            POWER((MAX(LAT_N) - MIN(LAT_N)), 2) + 
+            POWER((MAX(LONG_W) - MIN(LONG_W)), 2)
+        ), 4
+    ) AS EuclideanDistance
+FROM 
+    STATION;
+
+
+Q5. A median is defined as a number separating the higher half of a data set from the lower half. 
+Query the median of the Northern Latitudes (LAT_N) from STATION and round your answer to 4 decimal places.
+
+SELECT 
+    ROUND(AVG(lat_n), 4) AS median
+FROM
+(
+    SELECT lat_n, ROW_NUMBER() OVER (ORDER BY lat_n) AS rn
+    FROM station
+) AS subq
+WHERE
+    rn = (SELECT CEIL((COUNT(rn)+1)/2) FROM station)
+    OR
+    rn = (SELECT FLOOR((COUNT(rn)+1)/2) FROM station)
+
+
+Q6. You are given two tables: Students and Grades. Students contains three columns ID, Name and Marks.
+Ketty gives Eve a task to generate a report containing three columns: Name, Grade and Mark. 
+Ketty doesn't want the NAMES of those students who received a grade lower than 8. The report must be in descending order by grade 
+-- i.e. higher grades are entered first. If there is more than one student with the same grade (8-10) assigned to them, order those particular students by their name alphabetically. 
+Finally, if the grade is lower than 8, use "NULL" as their name and list them by their grades in descending order. 
+If there is more than one student with the same grade (1-7) assigned to them, order those particular students by their marks in ascending order.
+
+Write a query to help Eve.
+
+SELECT 
+    CASE 
+        WHEN g.Grade < 8 THEN 'NULL'
+        ELSE s.Name
+    END AS Name,
+    g.Grade,
+    s.Marks
+FROM 
+    Students s
+JOIN 
+    Grades g ON s.Marks BETWEEN g.Min_Mark AND g.Max_Mark
+ORDER BY 
+    g.Grade DESC,
+    CASE 
+        WHEN g.Grade >= 8 THEN s.Name
+        ELSE s.Marks
+    END ASC;
+
+
+Q7. Given the CITY and COUNTRY tables, query the sum of the populations of all cities where the CONTINENT is 'Asia'.
+
+Note: CITY.CountryCode and COUNTRY.Code are matching key columns.
+
+SELECT SUM(CITY.Population) AS TotalPopulation
+FROM CITY
+JOIN 
+COUNTRY ON CITY.CountryCode = COUNTRY.Code
+WHERE COUNTRY.Continent = 'Asia';
+
+
+Q8. Given the CITY and COUNTRY tables, query the names of all cities where the CONTINENT is 'Africa'.
+
+Note: CITY.CountryCode and COUNTRY.Code are matching key columns.
+
+SELECT CITY.NAME
+FROM CITY
+JOIN 
+COUNTRY ON CITY.CountryCode = COUNTRY.Code
+WHERE COUNTRY.Continent = 'Africa';
+
+
+Q9. Given the CITY and COUNTRY tables, query the names of all the continents (COUNTRY.Continent) and their respective average city populations (CITY.Population) rounded down to the nearest integer.
+
+Note: CITY.CountryCode and COUNTRY.Code are matching key columns.
+
+SELECT B.Continent, FLOOR(AVG(A.Population))
+FROM CITY AS A
+JOIN
+COUNTRY AS B
+ON A.COUNTRYCODE = B.CODE
+GROUP BY B.CONTINENT;
+
+
+Q10. P(R) represents a pattern drawn by Julia in R rows. The following pattern represents P(5):
+
+* * * * * 
+* * * * 
+* * * 
+* * 
+*
+Write a query to print the pattern P(20).
+
+WITH RECURSIVE Numbers AS (
+    SELECT 21 AS num
+    UNION ALL
+    SELECT num - 1
+    FROM Numbers
+    WHERE num > 1
+)
+SELECT 
+    REPEAT('* ', num - 1) AS Pattern
+FROM 
+    Numbers;
+
+
+
+
