@@ -1,4 +1,4 @@
--- Q1. Query the Name of any student in STUDENTS who scored higher than 75 Marks.
+-- Q18. Query the Name of any student in STUDENTS who scored higher than 75 Marks.
 -- Order your output by the last three characters of each name. 
 -- If two or more students both have names ending in the same last three characters 
 -- (i.e.: Bobby, Robby, etc.), secondary sort them by ascending ID.
@@ -9,7 +9,7 @@ WHERE Marks>75
 ORDER BY RIGHT(Name, 3), ID;
 
 
--- Q2. Write a query that prints a list of employee names (i.e.: the name attribute) 
+-- Q19. Write a query that prints a list of employee names (i.e.: the name attribute) 
 -- from the Employee table in alphabetical order.
 
 SELECT name
@@ -17,7 +17,7 @@ FROM Employee
 ORDER BY name;
 
 
--- Q3. Write a query that prints a list of employee names (i.e.: the name attribute) 
+-- Q20. Write a query that prints a list of employee names (i.e.: the name attribute) 
 -- for employees in Employee having a salary greater than $2000 per month who have been 
 -- employees for less than 10 months. Sort your result by ascending employee_id.
 
@@ -27,7 +27,7 @@ WHERE salary > 2000 and months < 10
 ORDER BY employee_id;
 
 
--- Q4. Write a query identifying the type of each record in the TRIANGLES table using its three side lengths. 
+-- Q21. Write a query identifying the type of each record in the TRIANGLES table using its three side lengths. 
 
 Equilateral: It's a triangle with 3 sides of equal length.
 Isosceles: It's a triangle with 2 sides of equal length.
@@ -43,7 +43,7 @@ END
 FROM TRIANGLES;
 
 
--- Q5. Generate the following two result sets:
+-- Q22. Generate the following two result sets:
 
 -- 1. Query an alphabetically ordered list of all names in OCCUPATIONS, immediately 
 -- followed by the first letter of each profession as a parenthetical (i.e.: enclosed in parentheses). 
@@ -74,7 +74,7 @@ ORDER BY
     COUNT(*), OCCUPATION;
 
 
--- Q6. Pivot the Occupation column in OCCUPATIONS so that each Name is 
+-- Q23. Pivot the Occupation column in OCCUPATIONS so that each Name is 
 -- sorted alphabetically and displayed underneath its corresponding Occupation. 
 -- The output column headers should be Doctor, Professor, Singer, and Actor, respectively.
 
@@ -102,7 +102,7 @@ ORDER BY
     RowNum;
 
 
--- Q7. Write a query to find the node type of Binary Tree ordered by the value of the node. 
+-- Q24. Write a query to find the node type of Binary Tree ordered by the value of the node. 
 -- Output one of the following for each node:
 
 -- Root: If node is root node.
@@ -125,7 +125,7 @@ Group by B2.P)tt
 Order By B1.N;
 
 
--- Q8. write a query to print the company_code, founder name, total number of lead managers, 
+-- Q25. write a query to print the company_code, founder name, total number of lead managers, 
 -- total number of senior managers, total number of managers,
 -- and total number of employees. Order your output by ascending company_code.
 
@@ -144,4 +144,3 @@ Employee e
 ON c.Company_Code = e.Company_Code 
 GROUP BY c.Company_Code, c.Founder 
 ORDER BY c.COMpany_Code;
-
