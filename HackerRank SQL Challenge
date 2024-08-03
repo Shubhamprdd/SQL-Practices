@@ -1,1 +1,53 @@
+Q . Given the CITY and COUNTRY tables, query the sum of the populations of all cities where the CONTINENT is 'Asia'.
 
+Note: CITY.CountryCode and COUNTRY.Code are matching key columns.
+
+SELECT SUM(A.POPULATION)
+FROM CITY AS A
+JOIN
+COUNTRY AS B
+ON A.COUNTRYCODE = B.CODE
+WHERE B.CONTINENT = "ASIA";
+
+
+Q . P(R) represents a pattern drawn by Julia in R rows. The following pattern represents P(5):
+
+* * * * * 
+* * * * 
+* * * 
+* * 
+*
+Write a query to print the pattern P(20).
+
+WITH RECURSIVE pattern AS (
+    SELECT 20 AS n
+    UNION ALL
+    SELECT n - 1
+    FROM pattern
+    WHERE n > 1
+)
+SELECT REPEAT('* ', n) AS stars
+FROM pattern;
+
+
+Q . P(R) represents a pattern drawn by Julia in R rows. The following pattern represents P(5):
+
+* 
+* * 
+* * * 
+* * * * 
+* * * * *
+Write a query to print the pattern P(20).
+
+WITH RECURSIVE pattern AS (
+    SELECT 1 AS n
+    UNION ALL
+    SELECT n + 1
+    FROM pattern
+    WHERE n < 20
+)
+SELECT REPEAT('* ', n) AS stars
+FROM pattern;
+
+
+Q . 
